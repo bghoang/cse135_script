@@ -14,7 +14,10 @@ TERMINATE_SCRIPT_IF_MISSING_CODE_FILE = False
 # code files required for grading, format as [filename:str,]
 REQUIRED_CODE_FILES = \
     [
-        "test.txt"
+        "test.txt",
+        "test2.txt",
+        "test3.txt",
+        "test4.txt",
     ]
 
 # non-code files required for grading, format as [filename:str,]
@@ -30,9 +33,9 @@ OPTIONAL_FILES = \
     ]
 
 # Modified to simulate submission environment
-STUDENT_SUBMISSION_PATH = '/autograder/submission/'
+STUDENT_SUBMISSION_PATH = 'autograder/submission'
 
-OUTPUT_JSON = {'output': '', "score": 0.0}
+OUTPUT_JSON = {'output': ''}
 
 
 def execute(command):
@@ -59,26 +62,6 @@ def append_visible_output(line):
 
 
 def write_json_and_quit():
-    # floor each case to 0, ceiling each case to max_score
-    for case in OUTPUT_JSON['tests']:
-        if case['score'] < 0:
-            case['score'] = 0
-        if case['score'] > case['max_score']:
-            case['score'] = case['max_score']
-
-    # sum points
-    OUTPUT_JSON['score'] = 0
-    '''for test_result in OUTPUT_JSON['tests']:
-        if not PRE_DEPLOYMENT or test_result['visibility'] == 'visible':
-            test_score = test_result['score']
-            OUTPUT_JSON['score'] += test_score
-
-    if PRINT_JSON_BEFORE_EXIT:
-        print_section_title('results.json')
-        pprint(OUTPUT_JSON, width=150)
-
-    print(f'[grade.py] Final score = [{OUTPUT_JSON["score"]}]')'''
-
     # write to results.json
     with open('results.json', 'w') as outfile:
         json.dump(OUTPUT_JSON, outfile)
@@ -87,17 +70,20 @@ def write_json_and_quit():
 
 def check_files():
     # check whether all non-code files exist
-    for filename in REQUIRED_NON_CODE_FILES:
+    '''for filename in REQUIRED_NON_CODE_FILES:
+        print(f'{STUDENT_SUBMISSION_PATH}/{filename}')
         if os.path.exists(f'{STUDENT_SUBMISSION_PATH}/{filename}'):
             append_visible_output(f'[     FOUND     ] {filename}')
             print(f'[     FOUND     ] {filename}')
         else:
             append_visible_output(f'[    MISSING    ] {filename}')
             print(f'[    MISSING    ] {filename}')
+    '''
 
     # check whether all code files exist
     all_code_file_exists = True
     for filename in REQUIRED_CODE_FILES:
+        print(f'{STUDENT_SUBMISSION_PATH}/{filename}')
         if os.path.exists(f'{STUDENT_SUBMISSION_PATH}/{filename}'):
             append_visible_output(f'[     FOUND     ] {filename}')
             print(f'[     FOUND     ] {filename}')
@@ -131,6 +117,6 @@ if __name__ == '__main__':
             rm(filename, '-f')
         cp(f'{STUDENT_SUBMISSION_PATH}/{filename}', '.')
     '''
-    # print(os.path.exists('test1.txt'))
+    # print(os.path.exists('/autograder/submission/test.txt'))
     check_files()
     write_json_and_quit()
