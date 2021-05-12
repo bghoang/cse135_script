@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
 # Set up autograder files
+PATH_TO_GRADE_PY='/autograder/grader/autograder/'
 
-cp /autograder/submission/calculator.py /autograder/source/calculator.py
+# cd to the autograder repo, cloned as `grader/`
+#cd ${PATH_TO_GRADE_PY}
 
-cd /autograder/source
+python3 source/checkFiles.py
 
-python3 checkFiles.py
+# the autograder produced a correctly formatted results.json, cp to the right place
+#cp ${PATH_TO_GRADE_PY}results.json /autograder/results/results.json
